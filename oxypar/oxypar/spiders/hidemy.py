@@ -11,6 +11,7 @@ class HidemeSpider(scrapy.Spider):
     name = 'hideme'
     allowed_domains = ['hidemy.name']
     url = 'https://hidemy.name/ru/proxy-list/'
+    # url = 'https://hidemy.name/ru/proxy-list/?type=s#list'
 
     def start_requests(self):
         print(BASEDIR)
@@ -35,13 +36,13 @@ class HidemeSpider(scrapy.Spider):
             row_data = {}
             columns = row.css('td') # SelectorList
 
-            row_data['ip'] = columns[0].get()
-            row_data['port'] = columns[1].get()
-            row_data['country'] = columns[2].css('#country').get()
-            row_data['ping'] = columns[3].css('#bar').get()
-            row_data['type'] = columns[4].get()
-            row_data['isanon'] = columns[5].get()
-            row_data['refresh'] = columns[6].get()
+            row_data['ip'] = columns[0].css('::text').get()
+            row_data['port'] = columns[1].css('::text').get()
+            row_data['country'] = columns[2].css('span.country::text').get()
+            row_data['ping'] = columns[3].css('div.bar p::text').get()
+            row_data['type'] = columns[4].css('::text').get()
+            row_data['isanon'] = columns[5].css('::text').get()
+            row_data['refresh'] = columns[6].css('::text').get()
 
             result.append(row_data)
 

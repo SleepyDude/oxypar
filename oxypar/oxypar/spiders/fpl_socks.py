@@ -6,7 +6,7 @@ from scrapy.loader import ItemLoader
 
 BASEDIR = Path(__file__).resolve().parent.parent.parent
 
-class FPLSpider(scrapy.Spider):
+class FPLSocksSpider(scrapy.Spider):
     name = 'fpl_socks'
     allowed_domains = ['socks-proxy.net']
     url = 'https://www.socks-proxy.net/'

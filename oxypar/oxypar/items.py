@@ -48,3 +48,6 @@ class ProxyItem(scrapy.Item):
     source = Field(
         output_processor=TakeFirst()
     )
+    ping = Field(
+        output_processor=TakeFirst()
+    )

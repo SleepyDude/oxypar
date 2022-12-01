@@ -6,7 +6,7 @@ from scrapy.loader import ItemLoader
 
 BASEDIR = Path(__file__).resolve().parent.parent.parent
 
-class FPLSpider(scrapy.Spider):
+class FPLHttpSpider(scrapy.Spider):
     name = 'fpl_http'
     allowed_domains = ['free-proxy-list.net']
     url = 'https://free-proxy-list.net/'

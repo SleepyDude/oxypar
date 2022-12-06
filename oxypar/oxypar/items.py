@@ -5,7 +5,7 @@
 
 import scrapy
 from scrapy.item import Item, Field
-from scrapy.loader.processors import MapCompose, TakeFirst, Compose
+from itemloaders.processors import TakeFirst, MapCompose
 
 # process EACH item in list if it's MapCompose
 # process LIST if it's Compose
@@ -28,7 +28,7 @@ class ProxyItem(scrapy.Item):
         output_processor=TakeFirst()
     )
     protocols = Field(
-        input_processor=MapCompose(lower_protocol)
+        input_processor=(MapCompose(lower_protocol))
     )
     https = Field(
         output_processor=TakeFirst()

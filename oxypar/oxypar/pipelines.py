@@ -24,8 +24,8 @@ class CheckPipeline:
     Checking proxy object and calculating ping
     """
     def __init__(self):
-        self.check_url = 'https://httpbin.org/ip'
-        # self.check_url = 'https://req-checker.herokuapp.com/v1/get_my_ip_data'
+        # self.check_url = 'https://httpbin.org/ip'
+        self.check_url = 'https://req-checker.herokuapp.com/v1/get_my_ip_data'
 
     def process_item(self, item, spider):
         ip_port = item['ip'] + ':' + item['port']

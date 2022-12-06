@@ -4,5 +4,7 @@ experiments.py
 
 oxypar/*.json
 
+checker
+
 /**/__pycache__
 .DS_Store

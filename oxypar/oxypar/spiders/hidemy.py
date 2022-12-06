@@ -1,9 +1,8 @@
 import scrapy
-from pprint import pprint as pp
 from scrapy.http.response.html import HtmlResponse
-import json
-import time
 from pathlib import Path
+from oxypar.items import ProxyItem
+from scrapy.loader import ItemLoader
 
 BASEDIR = Path(__file__).resolve().parent.parent.parent
 
@@ -12,6 +11,9 @@ class HidemeSpider(scrapy.Spider):
     allowed_domains = ['hidemy.name']
     url = 'https://hidemy.name/ru/proxy-list/'
     # url = 'https://hidemy.name/ru/proxy-list/?type=s#list'
+    custom_settings = {
+        'FEEDS': {'hideme.json': {'format': 'json', 'encoding': 'utf-8'}}
+    }
 
     def start_requests(self):
         print(BASEDIR)
@@ -28,24 +30,24 @@ class HidemeSpider(scrapy.Spider):
 
 
     def parse(self, response: HtmlResponse):
-        result = []
         print('parsing ', response.url)
         table = response.css('table')
         rows = table.css('tbody tr') # SelectorList
         for row in rows:
-            row_data = {}
-            columns = row.css('td') # SelectorList
+            loader = ItemLoader(ProxyItem(), selector=row)
+            loader.add_css('ip', 'td:nth-child(1)::text')
+            loader.add_css('port', 'td:nth-child(2)::text')
+            # loader.add_css('cc', 'td:nth-child(3)::text')
+            loader.add_css('country', 'td:nth-child(3) span.country::text')
+            protocols = row.css('td:nth-child(5)::text').get()
+            protocols = protocols.lower()
+            if 'https' in protocols:
+                loader.add_value('https', 'yes')
+            else:
+                loader.add_value('https', 'no')
+            loader.add_css('protocols', 'td:nth-child(5)::text')
+            loader.add_css('isanon', 'td:nth-child(6)::text')
+            loader.add_value('source', response.url)
+            
+            yield loader.load_item()
 
-            row_data['ip'] = columns[0].css('::text').get()
-            row_data['port'] = columns[1].css('::text').get()
-            row_data['country'] = columns[2].css('span.country::text').get()
-            row_data['ping'] = columns[3].css('div.bar p::text').get()
-            row_data['type'] = columns[4].css('::text').get()
-            row_data['isanon'] = columns[5].css('::text').get()
-            row_data['refresh'] = columns[6].css('::text').get()
-
-            result.append(row_data)
-
-        with open("hideme_ip.json", 'a') as f:
-            f.write(json.dumps(result, indent=2, ensure_ascii=False))
-        # self.log(f'Saved file {filename}')

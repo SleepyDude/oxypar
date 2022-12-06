@@ -11,6 +11,10 @@ class GeonodeSpider(scrapy.Spider):
     allowed_domains = ['proxylist.geonode.com']
     url = 'https://proxylist.geonode.com/api/proxy-list?limit=500&page=1&sort_by=lastChecked&sort_type=desc'
 
+    custom_settings = {
+        'FEEDS': {'geonode.json': {'format': 'json', 'encoding': 'utf-8'}}
+    }
+
     def __init__(self, limit=100, cc="", ptype="", *args, **kwargs):
         super(type(self), self).__init__(*args, **kwargs)
         self.ptype = ptype

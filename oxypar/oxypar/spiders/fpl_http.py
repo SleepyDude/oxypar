@@ -10,6 +10,9 @@ class FPLHttpSpider(scrapy.Spider):
     name = 'fpl_http'
     allowed_domains = ['free-proxy-list.net']
     url = 'https://free-proxy-list.net/'
+    custom_settings = {
+        'FEEDS': {'fpl_http.json': {'format': 'json', 'encoding': 'utf-8'}}
+    }
 
     def start_requests(self):
         # print(BASEDIR)

@@ -10,6 +10,9 @@ class FPLSocksSpider(scrapy.Spider):
     name = 'fpl_socks'
     allowed_domains = ['socks-proxy.net']
     url = 'https://www.socks-proxy.net/'
+    custom_settings = {
+        'FEEDS': {'fpl_socks.json': {'format': 'json', 'encoding': 'utf-8'}}
+    }
 
     def start_requests(self):
         # print(BASEDIR)

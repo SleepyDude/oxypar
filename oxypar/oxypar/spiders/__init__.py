@@ -6,3 +6,4 @@ from .fpl_http import FPLHttpSpider
 from .fpl_socks import FPLSocksSpider
 from .hidemy import HidemeSpider
 from .geonode import GeonodeSpider
+from .shiftyTR import ShiftySpider

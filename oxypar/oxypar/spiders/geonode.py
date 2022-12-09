@@ -23,12 +23,15 @@ class GeonodeSpider(scrapy.Spider):
             cc = "&country=" + cc
         if ptype:
             ptype = "&protocols=" + ptype
+        # print(f'Collecting{limit} proxies from {cc} region')
         self.url = f'https://proxylist.geonode.com/api/proxy-list?limit={limit}&page=1&sort_by=lastChecked&sort_type=desc{cc}{ptype}'
 
     def start_requests(self):
         yield scrapy.Request(url=self.url, callback=self.parse)
 
     def parse(self, response: HtmlResponse):
+        total = response.json()['total']
+        print(f'Found {total} proxies in geonode')
         proxies = response.json()['data']
         for proxy in proxies:
             loader = ItemLoader(ProxyItem())
